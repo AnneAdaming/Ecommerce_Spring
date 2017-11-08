@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -14,6 +13,10 @@
 		Mail : <h:inputText value="#{adminMB.admin.email}" />
 		Mdp : <h:inputText value="#{adminMB.admin.mdp}" />
 		<h:commandButton value="Login" action="#{adminMB.login}" />
+	</h:form>
+	
+	<h:form>
+		<h:commandButton value="test" action="#{produitMB.test}" />
 	</h:form>
 </h:body>
 </html>
