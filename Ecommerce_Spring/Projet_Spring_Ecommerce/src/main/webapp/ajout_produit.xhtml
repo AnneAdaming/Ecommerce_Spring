@@ -30,7 +30,7 @@
 			
 			<p:outputLabel for="categorieId" value="Categorie : " />
 			<p:selectOneMenu id="categorieId" value="#{produitMB.categorieIdString}">
-				<c:forEach var="categorie" items="#{categorieMB.listeCategories}">
+				<c:forEach var="categorie" items="#{sessionScope.listeCategories}">
 					<f:selectItem itemLabel="#{categorie.nomCategorie}" itemValue="#{categorie.id}" />
 				</c:forEach>
 			</p:selectOneMenu>

@@ -38,7 +38,6 @@ public class ProduitMB implements Serializable {
 	
 	@PostConstruct
 	public void init(ComponentSystemEvent event) {
-		
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		this.produit = new Produit();
@@ -68,16 +67,14 @@ public class ProduitMB implements Serializable {
 	public String addProduit() {
 		long idCategorie = Long.parseLong(this.categorieIdString);
 		Categorie c = this.categorieService.getCategorieById(idCategorie);
-		produitService.addProduit(this.produit, c);
+		System.out.println("Ajout produit : " + produitService.addProduit(this.produit, c));
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		return "home.xhtml";
-		
 	}
 	public String updateProduit() {
 		long idCategorie = Long.parseLong(this.categorieIdString);
 		Categorie c = this.categorieService.getCategorieById(idCategorie);
-		System.out.println("update : categorie=" + c);
 		produitService.updateProduit(this.produit, c);
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);

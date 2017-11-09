@@ -48,15 +48,21 @@ public class CategorieMB implements Serializable {
 	
 	// Methodes
 	public String addCategorie() {
-		categorieService.addCategorie(this.categorie);
+		System.out.println("Ajout categorie : " + categorieService.addCategorie(this.categorie));
+		List<Categorie> listeCategories = categorieService.getAllCategories();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
 		return "home.xhtml";
 	}
 	public String updateCategorie() {
 		categorieService.updateCategorie(this.categorie);
+		List<Categorie> listeCategories = categorieService.getAllCategories();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
 		return "home.xhtml";
 	}
 	public String deleteCategorie() {
 		categorieService.deleteCategorie(this.categorie);
+		List<Categorie> listeCategories = categorieService.getAllCategories();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
 		return "home.xhtml";
 	}
 }

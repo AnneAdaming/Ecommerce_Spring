@@ -54,7 +54,7 @@ public class AdminMB implements Serializable {
 		}
 	}
 	public String addAdmin() {
-		adminService.addAdmin(this.admin);
+		System.out.println("Ajout admin : " + adminService.addAdmin(this.admin));
 		return "home.xhtml";
 	}
 }
