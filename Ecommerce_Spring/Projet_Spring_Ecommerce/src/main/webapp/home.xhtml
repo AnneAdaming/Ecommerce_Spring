@@ -8,16 +8,17 @@
 <h:head>
 	<title>Home Ecommerce</title>
 	
-	<f:event listener="#{categorieMB.init}" type="preRenderView" />
-	<f:event listener="#{produitMB.init}" type="preRenderView" />
+	<f:event listener="#{categorieMB.initListener}" type="preRenderView" />
+	<f:event listener="#{produitMB.initListener}" type="preRenderView" />
 </h:head>
 <h:body>
-
-
 	<p:link value="Login Admin" outcome="login.xhtml" style="color:orange" />
 	 | 
 	<p:link value="Ajout Admin" outcome="ajout_admin.xhtml" style="color:green" />
-	<br/><br/>
+	
+	<br/>
+	<br/>
+	
 	<p:link value="Ajout Categorie" outcome="ajout_categorie.xhtml" style="color:green" />
 	 | 
 	<p:link value="Modif Categorie" outcome="modif_categorie.xhtml" style="color:green" />
@@ -34,7 +35,10 @@
 	        <h:outputText value="#{categorie.description}" />
 	    </p:column>
 	</p:dataTable>
-	<br/><br/>
+	
+	<br/>
+	<br/>
+	
 	<p:link value="Ajout Produit" outcome="ajout_produit.xhtml" style="color:green" />
 	 | 
 	<p:link value="Modif Produit" outcome="modif_produit.xhtml" style="color:green" />

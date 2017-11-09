@@ -57,8 +57,6 @@ public class CategorieDaoImpl implements ICategorieDao {
 	public void deleteCategorie(Categorie c) {
 		Session session = sessionFactory.getCurrentSession();
 		c = (Categorie) session.get(c.getClass(), c.getId());
-		if (c != null) {
-			session.delete(c);
-		}
+		session.delete(c);
 	}
 }

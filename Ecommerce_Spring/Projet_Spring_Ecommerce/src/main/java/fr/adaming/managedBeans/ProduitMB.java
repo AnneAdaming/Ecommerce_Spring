@@ -35,17 +35,12 @@ public class ProduitMB implements Serializable {
 	private LigneCommande ligne;
 	private long idProduit;
 
-	
-
 	// Constructeur
 	public ProduitMB() {
 		super();
 	}
-	
-	
-	public void init(ComponentSystemEvent event) {
-		List<Produit> listeProduits = produitService.getAllProduits();
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
+	@PostConstruct
+	public void init(){
 		this.produit = new Produit();
 		this.panier = (Panier) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("panier");
 		if (panier == null) {
@@ -55,17 +50,10 @@ public class ProduitMB implements Serializable {
 		}
 		ligne=new LigneCommande();
 	}
-	
-	@PostConstruct
-	public void init2(){
-		this.produit = new Produit();
-		this.panier = (Panier) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("panier");
-		if (panier == null) {
-			this.panier = new Panier();
-			this.panier.setListe(new ArrayList<LigneCommande>());
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("panier", panier);
-		}
-		ligne=new LigneCommande();
+	public void initListener(ComponentSystemEvent event) {
+		List<Produit> listeProduits = produitService.getAllProduits();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
+		this.init();
 	}
 	
 	// Getters / Setters
@@ -91,35 +79,21 @@ public class ProduitMB implements Serializable {
 	public Panier getPanier() {
 		return panier;
 	}
-
-
 	public void setPanier(Panier panier) {
 		this.panier = panier;
 	}
-
-
 	public LigneCommande getLigne() {
 		return ligne;
 	}
-
-
 	public void setLigne(LigneCommande ligne) {
 		this.ligne = ligne;
 	}
-
-
-	
-
-
 	public long getIdProduit() {
 		return idProduit;
 	}
-
-
 	public void setIdProduit(long idProduit) {
 		this.idProduit = idProduit;
 	}
-
 
 	// Methodes
 	public String addProduit() {
@@ -193,7 +167,6 @@ public class ProduitMB implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Vous n'aviez pas sélectionné ce produit."));
 		}
-		
 		return "home";
 	}
 }

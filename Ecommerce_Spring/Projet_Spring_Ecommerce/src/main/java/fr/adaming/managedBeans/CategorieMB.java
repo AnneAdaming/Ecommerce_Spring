@@ -28,23 +28,20 @@ public class CategorieMB implements Serializable {
 	public CategorieMB() {
 		super();
 	}
-	
-	public void init(ComponentSystemEvent event) {
-		List<Categorie> listeCategories = categorieService.getAllCategories();
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
+	@PostConstruct
+	public void init() {
 		this.categorie = new Categorie();
 	}
-	
-	@PostConstruct
-	public void init2() {
-		this.categorie = new Categorie();
+	public void initListener(ComponentSystemEvent event) {
+		List<Categorie> listeCategories = categorieService.getAllCategories();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
+		this.init();
 	}
 	
 	// Getters / Setters
 	public void setCategorieService(ICategorieService categorieService) {
 		this.categorieService = categorieService;
 	}
-
 	public Categorie getCategorie() {
 		return categorie;
 	}

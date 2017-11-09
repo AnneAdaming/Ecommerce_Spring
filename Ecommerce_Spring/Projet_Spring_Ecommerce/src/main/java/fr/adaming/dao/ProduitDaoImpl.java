@@ -72,7 +72,7 @@ public class ProduitDaoImpl implements IProduitDao{
 	@Override
 	public void deleteProduit(Produit p) {
 		Session session = sessionFactory.getCurrentSession();
-		p=(Produit) session.get(Produit.class, p.getId());
+		p = (Produit) session.get(Produit.class, p.getId());
 		session.delete(p);
 	}
 }
