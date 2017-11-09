@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 
 import fr.adaming.model.Categorie;
 import fr.adaming.model.Produit;
@@ -24,17 +26,21 @@ public class ProduitMB implements Serializable {
 	private IProduitService produitService;
 	@ManagedProperty(value="#{categorieService}")
 	private ICategorieService categorieService;
-	private List<Produit> listeProduits;
 	private Produit produit;
 	private String categorieIdString;
+	
 
 	// Constructeur
 	public ProduitMB() {
 		super();
 	}
+	
+	
 	@PostConstruct
-	private void init() {
-		this.listeProduits = produitService.getAllProduits();
+	public void init(ComponentSystemEvent event) {
+		
+		List<Produit> listeProduits = produitService.getAllProduits();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		this.produit = new Produit();
 	}
 	
@@ -44,12 +50,6 @@ public class ProduitMB implements Serializable {
 	}
 	public void setCategorieService(ICategorieService categorieService) {
 		this.categorieService = categorieService;
-	}
-	public List<Produit> getListeProduits() {
-		return listeProduits;
-	}
-	public void setListeProduits(List<Produit> listeProduits) {
-		this.listeProduits = listeProduits;
 	}
 	public Produit getProduit() {
 		return produit;
@@ -63,23 +63,30 @@ public class ProduitMB implements Serializable {
 	public void setCategorieIdString(String categorieIdString) {
 		this.categorieIdString = categorieIdString;
 	}
-	
+
 	// Methodes
 	public String addProduit() {
 		long idCategorie = Long.parseLong(this.categorieIdString);
 		Categorie c = this.categorieService.getCategorieById(idCategorie);
 		produitService.addProduit(this.produit, c);
+		List<Produit> listeProduits = produitService.getAllProduits();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		return "home.xhtml";
+		
 	}
 	public String updateProduit() {
 		long idCategorie = Long.parseLong(this.categorieIdString);
 		Categorie c = this.categorieService.getCategorieById(idCategorie);
 		System.out.println("update : categorie=" + c);
 		produitService.updateProduit(this.produit, c);
+		List<Produit> listeProduits = produitService.getAllProduits();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		return "home.xhtml";
 	}
 	public String deleteProduit() {
 		produitService.deleteProduit(this.produit);
+		List<Produit> listeProduits = produitService.getAllProduits();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		return "home.xhtml";
 	}
 }

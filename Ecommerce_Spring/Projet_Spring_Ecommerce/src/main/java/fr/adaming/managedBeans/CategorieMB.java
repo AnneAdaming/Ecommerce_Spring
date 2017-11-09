@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import fr.adaming.model.Categorie;
 import fr.adaming.service.ICategorieService;
@@ -20,7 +21,6 @@ public class CategorieMB implements Serializable {
 	// Attributs
 	@ManagedProperty(value="#{categorieService}")
 	private ICategorieService categorieService;
-	private List<Categorie> listeCategories;
 	private Categorie categorie;
 
 	// Constructeur
@@ -28,8 +28,9 @@ public class CategorieMB implements Serializable {
 		super();
 	}
 	@PostConstruct
-	private void init() {
-		this.listeCategories = categorieService.getAllCategories();
+	public void init() {
+		List<Categorie> listeCategories = categorieService.getAllCategories();
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
 		this.categorie = new Categorie();
 	}
 	
@@ -37,12 +38,7 @@ public class CategorieMB implements Serializable {
 	public void setCategorieService(ICategorieService categorieService) {
 		this.categorieService = categorieService;
 	}
-	public List<Categorie> getListeCategories() {
-		return listeCategories;
-	}
-	public void setListeCategories(List<Categorie> listeCategories) {
-		this.listeCategories = listeCategories;
-	}
+
 	public Categorie getCategorie() {
 		return categorie;
 	}
