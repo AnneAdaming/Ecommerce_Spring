@@ -7,8 +7,9 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Home Ecommerce</title>
-	<f:event listener="#{produitMB.init}" type="preRenderView" />
+	
 	<f:event listener="#{categorieMB.init}" type="preRenderView" />
+	<f:event listener="#{produitMB.init}" type="preRenderView" />
 </h:head>
 <h:body>
 
@@ -21,7 +22,7 @@
 	 | 
 	<p:link value="Modif Categorie" outcome="modif_categorie.xhtml" style="color:green" />
 	 | 
-	<p:link value="Suppr Categorie" outcome="suppr_categorie.xhtml" style="color:red" />
+	<p:link value="Suppr Categorie" outcome="suppr_categorie.xhtml" style="color:green" />
 	<p:dataTable var="categorie" value="#{sessionScope.listeCategories}">
 	    <p:column headerText="Id">
 	        <h:outputText value="#{categorie.id}" />
@@ -38,7 +39,7 @@
 	 | 
 	<p:link value="Modif Produit" outcome="modif_produit.xhtml" style="color:green" />
 	 | 
-	<p:link value="Suppr Produit" outcome="suppr_produit.xhtml" style="color:red" />
+	<p:link value="Suppr Produit" outcome="suppr_produit.xhtml" style="color:green" />
 	<p:dataTable var="produit" value="#{sessionScope.listeProduits}">
 	    <p:column headerText="Id">
 	        <h:outputText value="#{produit.id}" />
@@ -57,6 +58,20 @@
 	    </p:column>
 	    <p:column headerText="Categorie">
 	        <h:outputText value="#{produit.categorie.nomCategorie}" />
+	    </p:column>
+	    <p:column headerText="Ajouter au panier">
+	    	<h:form>
+	    		<h:commandButton value="+1" action="#{produitMB.augmenter}">
+	    			<f:setPropertyActionListener target="#{produitMB.idProduit}" value="#{produit.id}" />
+	    		</h:commandButton>
+	    	</h:form>
+	    </p:column>
+	    <p:column headerText="Enlever du panier">
+	    	<h:form>
+	    		<h:commandButton value="-1" action="#{produitMB.diminuer}">
+	    			<f:setPropertyActionListener target="#{produitMB.idProduit}" value="#{produit.id}" />
+	    		</h:commandButton>
+	    	</h:form>
 	    </p:column>
 	</p:dataTable>
 	

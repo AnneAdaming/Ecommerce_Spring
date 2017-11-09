@@ -50,6 +50,7 @@ public class CategorieServiceImpl implements ICategorieService {
 
 	@Override
 	public void deleteCategorie(Categorie c) {
+		System.out.println("Service : "+c);
 		if (c==null) {
 			System.out.println("Erreur lors de la suppression de la categorie");
 			return;

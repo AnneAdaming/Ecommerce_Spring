@@ -71,7 +71,8 @@ public class ProduitDaoImpl implements IProduitDao{
 	
 	@Override
 	public void deleteProduit(Produit p) {
-		// TODO Auto-generated method stub
-		
+		Session session = sessionFactory.getCurrentSession();
+		p=(Produit) session.get(Produit.class, p.getId());
+		session.delete(p);
 	}
 }

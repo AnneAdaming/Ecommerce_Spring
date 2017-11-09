@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 
 import fr.adaming.model.Categorie;
 import fr.adaming.service.ICategorieService;
@@ -27,10 +28,15 @@ public class CategorieMB implements Serializable {
 	public CategorieMB() {
 		super();
 	}
-	@PostConstruct
-	public void init() {
+	
+	public void init(ComponentSystemEvent event) {
 		List<Categorie> listeCategories = categorieService.getAllCategories();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
+		this.categorie = new Categorie();
+	}
+	
+	@PostConstruct
+	public void init2() {
 		this.categorie = new Categorie();
 	}
 	
@@ -60,6 +66,7 @@ public class CategorieMB implements Serializable {
 		return "home.xhtml";
 	}
 	public String deleteCategorie() {
+		System.out.println("vue : "+categorie);
 		categorieService.deleteCategorie(this.categorie);
 		List<Categorie> listeCategories = categorieService.getAllCategories();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
