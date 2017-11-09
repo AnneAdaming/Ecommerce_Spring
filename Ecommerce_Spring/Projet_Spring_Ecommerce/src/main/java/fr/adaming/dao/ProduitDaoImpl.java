@@ -20,47 +20,57 @@ public class ProduitDaoImpl implements IProduitDao{
 		this.sessionFactory = sessionFactory;
 	}
 
+	
 	@Override
-	public List<Produit> getAllProduit() {
+	public Produit getProduitById(long id) {
+		Session session = sessionFactory.getCurrentSession();
+		Produit p = (Produit) session.get(Produit.class, id);
+		return p;
+	}
+	
+	@Override
+	public List<Produit> getAllProduits() {
 		Session session = sessionFactory.getCurrentSession();
 		String req="FROM Produit p";
 		Query query=session.createQuery(req);
+		@SuppressWarnings("unchecked")
 		List<Produit> liste=query.list();
 		return liste;
 	}
 
 	@Override
-	public List<Produit> getAllProduitByCategorie(Categorie c) {
+	public List<Produit> getAllProduitsByCategorie(Categorie c) {
 		Session session = sessionFactory.getCurrentSession();
-		String req="FROM Produit p WHERE p.categorie.id=:pId";
+		String req="FROM Produit p WHERE p.categorie.id=:pIdc";
 		Query query=session.createQuery(req);
-		query.setParameter("pId", c.getId());
+		query.setParameter("pIdc", c.getId());
+		@SuppressWarnings("unchecked")
 		List<Produit> liste=query.list();
 		return liste;
 	}
 
 	@Override
-	public Produit getProduitById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Produit addProduit(Produit p) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(p);
+		return p;
 	}
 
 	@Override
-	public Produit addProduit(Produit p, Categorie c) {
-		// TODO Auto-generated method stub
-		return null;
+	public Produit updateProduit(Produit p) {
+		Session session = sessionFactory.getCurrentSession();
+		Produit pOut = (Produit) session.get(Produit.class, p.getId());
+		pOut.setDesignation(p.getDesignation());
+		pOut.setDescription(p.getDescription());
+		pOut.setPrix(p.getPrix());
+		pOut.setQuantite(p.getQuantite());
+		session.saveOrUpdate(pOut);
+		return pOut;
 	}
-
+	
 	@Override
 	public void deleteProduit(Produit p) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public Produit modifyProduit(Produit p) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -10,13 +10,16 @@
 </h:head>
 <h:body>
 	<h:form>
-		Mail : <h:inputText value="#{adminMB.admin.email}" />
-		Mdp : <h:inputText value="#{adminMB.admin.mdp}" />
-		<h:commandButton value="Login" action="#{adminMB.login}" />
-	</h:form>
-	
-	<h:form>
-		<h:commandButton value="test" action="#{produitMB.test}" />
+		<h:panelGrid columns="3" id="loginId">
+			<p:outputLabel for="emailId" value="Mail : " />
+			<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true" />
+			<p:message for="emailId" style="color: red" />
+			
+			<p:outputLabel for="mdpId" value="Mdp : " />
+			<p:inputText id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
+			<p:message for="mdpId" style="color: red" />
+		</h:panelGrid>
+		<p:commandButton value="Login" action="#{adminMB.login}" update="loginId" />
 	</h:form>
 </h:body>
 </html>

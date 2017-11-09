@@ -20,28 +20,52 @@ public class ProduitServiceImpl implements IProduitService {
 		this.produitDao = produitDao;
 	}
 	
-	public List<Produit> getAllProduit(){
-		return produitDao.getAllProduit();
-	}
-	
-	public List<Produit> getAllProduitByCategorie(Categorie c){
-		return produitDao.getAllProduitByCategorie(c);
-	}
-	
+
+	@Override
 	public Produit getProduitById(long id){
-		return null;
+		return produitDao.getProduitById(id);
 	}
-	
-	public Produit addProduit(Produit p, Categorie c){
-		return null;
+
+	@Override
+	public List<Produit> getAllProduits(){
+		return produitDao.getAllProduits();
 	}
-	
-	public void deleteProduit(Produit p){
-		
+
+	@Override
+	public List<Produit> getAllProduitsByCategorie(Categorie c) {
+		if (c==null) {
+			System.out.println("Erreur lors de la recuperation de la liste des produits par categorie");
+			return null;
+		}
+		return produitDao.getAllProduitsByCategorie(c);
 	}
-	
-	public Produit modifyProduit(Produit p){
-		return null;
+
+	@Override
+	public Produit addProduit(Produit p, Categorie c) {
+		if (p==null || c==null) {
+			System.out.println("Erreur lors de l'ajout du produit");
+			return null;
+		}
+		p.setCategorie(c);
+		return produitDao.addProduit(p);
 	}
-	
+
+	@Override
+	public Produit updateProduit(Produit p, Categorie c) {
+		if (p==null) {
+			System.out.println("Erreur lors de la modification du produit");
+			return null;
+		}
+		p.setCategorie(c);
+		return produitDao.updateProduit(p);
+	}
+
+	@Override
+	public void deleteProduit(Produit p) {
+		if (p==null) {
+			System.out.println("Erreur lors de la suppression du produit");
+			return;
+		}
+		produitDao.deleteProduit(p);
+	}
 }

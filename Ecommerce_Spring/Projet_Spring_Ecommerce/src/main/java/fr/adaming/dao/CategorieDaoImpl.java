@@ -19,10 +19,11 @@ public class CategorieDaoImpl implements ICategorieDao {
 		this.sessionFactory = sessionFactory;
 	}
 
+	
 	@Override
-	public Categorie addCategorie(Categorie c) {
+	public Categorie getCategorieById(long id) {
 		Session session = sessionFactory.getCurrentSession();
-		session.save(c);
+		Categorie c=(Categorie) session.get(Categorie.class, id);
 		return c;
 	}
 
@@ -31,17 +32,15 @@ public class CategorieDaoImpl implements ICategorieDao {
 		Session session = sessionFactory.getCurrentSession();
 		String req="FROM Categorie c";
 		Query query=session.createQuery(req);
+		@SuppressWarnings("unchecked")
 		List<Categorie> liste=query.list();
 		return liste;
 	}
 
 	@Override
-	public Categorie getCategorieById(long id) {
+	public Categorie addCategorie(Categorie c) {
 		Session session = sessionFactory.getCurrentSession();
-		String req="FROM Categorie c WHERE id=:pId";
-		Query query=session.createQuery(req);
-		query.setParameter("pId", id);
-		Categorie c=(Categorie) query.uniqueResult();
+		session.save(c);
 		return c;
 	}
 
@@ -56,14 +55,9 @@ public class CategorieDaoImpl implements ICategorieDao {
 	}
 
 	@Override
-	public Categorie deleteCategorie(Categorie c) {
+	public void deleteCategorie(Categorie c) {
 		Session session = sessionFactory.getCurrentSession();
 		c=(Categorie) session.get(c.getClass(), c.getId());
 		session.delete(c);
-		return c;
 	}
-	
-	
-	
-
 }

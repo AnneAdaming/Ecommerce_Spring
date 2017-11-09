@@ -19,11 +19,7 @@ public class CategorieServiceImpl implements ICategorieService {
 		this.categorieDao = categorieDao;
 	}
 
-	@Override
-	public Categorie addCategorie(Categorie c) {
-		return categorieDao.addCategorie(c);
-	}
-
+	
 	@Override
 	public List<Categorie> getAllCategories() {
 		return categorieDao.getAllCategories();
@@ -33,16 +29,31 @@ public class CategorieServiceImpl implements ICategorieService {
 	public Categorie getCategorieById(long id) {
 		return categorieDao.getCategorieById(id);
 	}
+	
+	@Override
+	public Categorie addCategorie(Categorie c) {
+		if (c==null) {
+			System.out.println("Erreur lors de l'ajout de la categorie");
+			return null;
+		}
+		return categorieDao.addCategorie(c);
+	}
 
 	@Override
 	public Categorie updateCategorie(Categorie c) {
+		if (c==null) {
+			System.out.println("Erreur lors de la modification de la categorie");
+			return null;
+		}
 		return categorieDao.updateCategorie(c);
 	}
 
 	@Override
-	public Categorie deleteCategorie(Categorie c) {
-		return categorieDao.deleteCategorie(c);
+	public void deleteCategorie(Categorie c) {
+		if (c==null) {
+			System.out.println("Erreur lors de la suppression de la categorie");
+			return;
+		}
+		categorieDao.deleteCategorie(c);
 	}
-
-
 }

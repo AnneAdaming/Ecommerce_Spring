@@ -9,5 +9,33 @@
 	<title>Modif Produit</title>
 </h:head>
 <h:body>
+	<h:form>
+		<h:panelGrid columns="3" id="modifProduitId">
+			<p:outputLabel for="idId" value="Id : " />
+			<p:inputText id="idId" value="#{produitMB.produit.id}" required="true" />
+			<p:message for="idId" style="color: red" />
+			
+			<p:outputLabel for="designationId" value="Designation : " />
+			<p:inputText id="designationId" value="#{produitMB.produit.designation}" required="true" />
+			<p:message for="designationId" style="color: red" />
+			
+			<p:outputLabel for="descriptionId" value="Description : " />
+			<p:inputText id="descriptionId" value="#{produitMB.produit.description}" required="true" />
+			<p:message for="descriptionId" style="color: red" />
+			
+			<p:outputLabel for="prixId" value="Prix : " />
+			<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true" />
+			<p:message for="prixId" style="color: red" />
+			
+			<p:outputLabel for="quantiteId" value="Quantite : " />
+			<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true" />
+			<p:message for="quantiteId" style="color: red" />
+			
+			<p:outputLabel for="categorieId" value="Categorie : " />
+			<p:inputText id="categorieId" placeholder="TODO: liste deroulante" required="true" />
+			<p:message for="categorieId" style="color: red" />
+		</h:panelGrid>
+		<p:commandButton value="Modifier" action="#{produitMB.updateProduit}" update="modifProduitId" />
+	</h:form>
 </h:body>
 </html>
