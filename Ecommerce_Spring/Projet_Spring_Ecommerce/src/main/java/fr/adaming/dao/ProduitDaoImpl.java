@@ -64,6 +64,7 @@ public class ProduitDaoImpl implements IProduitDao{
 		pOut.setDescription(p.getDescription());
 		pOut.setPrix(p.getPrix());
 		pOut.setQuantite(p.getQuantite());
+		pOut.setCategorie(p.getCategorie());
 		session.saveOrUpdate(pOut);
 		return pOut;
 	}

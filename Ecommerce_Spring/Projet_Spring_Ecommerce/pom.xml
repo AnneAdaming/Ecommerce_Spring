@@ -5,7 +5,7 @@
 	<artifactId>Projet_Spring_Ecommerce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	
+
 	<properties>
 		<spring-version>4.1.9.RELEASE</spring-version>
 		<hibernate-version>4.2.21.Final</hibernate-version>
@@ -84,6 +84,12 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>5.3</version>
+		</dependency>
+		<!-- ==================================== Divers ==================================== -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 	</dependencies>
 

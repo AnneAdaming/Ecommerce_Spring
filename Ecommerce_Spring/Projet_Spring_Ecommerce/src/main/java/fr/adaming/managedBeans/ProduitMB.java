@@ -11,6 +11,7 @@ import javax.faces.bean.RequestScoped;
 
 import fr.adaming.model.Categorie;
 import fr.adaming.model.Produit;
+import fr.adaming.service.ICategorieService;
 import fr.adaming.service.IProduitService;
 
 @ManagedBean(name="produitMB")
@@ -21,9 +22,11 @@ public class ProduitMB implements Serializable {
 	// Attributs
 	@ManagedProperty(value="#{produitService}")
 	private IProduitService produitService;
+	@ManagedProperty(value="#{categorieService}")
+	private ICategorieService categorieService;
 	private List<Produit> listeProduits;
 	private Produit produit;
-	private Categorie categorie;
+	private String categorieIdString;
 
 	// Constructeur
 	public ProduitMB() {
@@ -39,6 +42,9 @@ public class ProduitMB implements Serializable {
 	public void setProduitService(IProduitService produitService) {
 		this.produitService = produitService;
 	}
+	public void setCategorieService(ICategorieService categorieService) {
+		this.categorieService = categorieService;
+	}
 	public List<Produit> getListeProduits() {
 		return listeProduits;
 	}
@@ -51,20 +57,25 @@ public class ProduitMB implements Serializable {
 	public void setProduit(Produit produit) {
 		this.produit = produit;
 	}
-	public Categorie getCategorie() {
-		return categorie;
+	public String getCategorieIdString() {
+		return categorieIdString;
 	}
-	public void setCategorie(Categorie categorie) {
-		this.categorie = categorie;
+	public void setCategorieIdString(String categorieIdString) {
+		this.categorieIdString = categorieIdString;
 	}
 	
 	// Methodes
 	public String addProduit() {
-		produitService.addProduit(this.produit, this.categorie);
+		long idCategorie = Long.parseLong(this.categorieIdString);
+		Categorie c = this.categorieService.getCategorieById(idCategorie);
+		produitService.addProduit(this.produit, c);
 		return "home.xhtml";
 	}
 	public String updateProduit() {
-		produitService.updateProduit(this.produit, this.categorie);
+		long idCategorie = Long.parseLong(this.categorieIdString);
+		Categorie c = this.categorieService.getCategorieById(idCategorie);
+		System.out.println("update : categorie=" + c);
+		produitService.updateProduit(this.produit, c);
 		return "home.xhtml";
 	}
 	public String deleteProduit() {
