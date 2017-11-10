@@ -12,6 +12,10 @@
 	<f:event listener="#{produitMB.initListener}" type="preRenderView" />
 </h:head>
 <h:body>
+	<h:form>
+		<h:commandButton value="Envoyer Mail" action="#{testMB.sendMail}" />
+		<h:commandButton value="Exporter Pdf" action="#{testMB.exportPdf}" />
+	</h:form>
 	<p:link value="Login Admin" outcome="login.xhtml" style="color:orange" />
 	 | 
 	<p:link value="Ajout Admin" outcome="ajout_admin.xhtml" style="color:green" />

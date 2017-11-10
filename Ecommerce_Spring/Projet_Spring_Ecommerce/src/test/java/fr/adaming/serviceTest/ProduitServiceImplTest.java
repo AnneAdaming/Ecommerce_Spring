@@ -33,12 +33,12 @@ public class ProduitServiceImplTest {
 	@Transactional
 	@Rollback(true)
 	public void testDeleteProduit(){
-		List<Produit> listeProduits = produitService.getAllProduits();
-		if (listeProduits.size() > 0) {
-			int taille = listeProduits.size();
+//		List<Produit> listeProduits = produitService.getAllProduits();
+//		if (listeProduits.size() > 0) {
+//			int taille = listeProduits.size();
 //			produitService.deleteProduit(produit);
 //			assertEquals(taille-1, produitService.getAllProduits().size());
-		}
+//		}
 	}
 
 }
