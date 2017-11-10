@@ -12,6 +12,13 @@
 	<f:event listener="#{produitMB.initListener}" type="preRenderView" />
 </h:head>
 <h:body>
+	<h:form enctype="multipart/form-data">
+		<p:messages showDetail="true" />
+		<p:fileUpload value="#{imageStoreBean.file}" mode="simple" />
+		<p:commandButton value="Submit" ajax="false" actionListener="#{imageStoreBean.storeImage}" />
+		<h:graphicImage id="image" alt="uploaded image" url="/image"/>
+	</h:form>
+
 	<h:form>
 		<h:commandButton value="Envoyer Mail" action="#{testMB.sendMail}" />
 		<h:commandButton value="Exporter Pdf" action="#{testMB.exportPdf}" />
