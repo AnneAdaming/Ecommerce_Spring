@@ -15,7 +15,7 @@
 	
 	<aop:aspectj-autoproxy />
 	<bean id="testBean" class="fr.adaming.managedBeans.TestMB" />
-	<bean id="pdfAspectBean" class="fr.adaming.aop.PdfAOP" />
+
 	
 	<bean id="dataSourceBean" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${jdbc.driver}" />
@@ -41,4 +41,7 @@
 	</bean>
 	
 	<tx:annotation-driven transaction-manager="transactionManagerBean" />
+	
+	
+	
 </beans>

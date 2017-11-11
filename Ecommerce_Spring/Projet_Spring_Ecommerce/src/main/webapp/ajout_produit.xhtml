@@ -10,7 +10,7 @@
 	<title>Ajout Produit</title>
 </h:head>
 <h:body>
-	<h:form>
+	<h:form enctype="multipart/form-data">
 		<h:panelGrid columns="3" id="ajoutProduitId">
 			<p:outputLabel for="designationId" value="Designation : " />
 			<p:inputText id="designationId" value="#{produitMB.produit.designation}" required="true" />
@@ -34,9 +34,13 @@
 					<f:selectItem itemLabel="#{categorie.nomCategorie}" itemValue="#{categorie.id}" />
 				</c:forEach>
 			</p:selectOneMenu>
+			
+			<p:messages showDetail="true" />
+			<p:fileUpload value="#{produitMB.imageFichier}" mode="simple" />
+			
 			<p:message for="categorieId" style="color: red" />
 		</h:panelGrid>
-		<p:commandButton value="Ajouter" action="#{produitMB.addProduit}" update="ajoutProduitId" />
+		<p:commandButton value="Ajouter" action="#{produitMB.addProduit}" update="ajoutProduitId" ajax="false" />
 	</h:form>
 </h:body>
 </html>

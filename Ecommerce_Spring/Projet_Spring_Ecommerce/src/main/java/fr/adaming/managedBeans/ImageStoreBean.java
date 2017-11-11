@@ -39,6 +39,10 @@ public class ImageStoreBean {
 
 	}
 	
+	private void uploadImage(){
+		
+	}
+	
 	public UploadedFile getFile() {
 		return file;
 	}

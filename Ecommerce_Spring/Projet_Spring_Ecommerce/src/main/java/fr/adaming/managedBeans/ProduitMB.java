@@ -1,7 +1,6 @@
 package fr.adaming.managedBeans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,10 +10,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.imageio.ImageIO;
+
+import org.primefaces.model.UploadedFile;
 
 import fr.adaming.model.Categorie;
-import fr.adaming.model.LigneCommande;
-import fr.adaming.model.Panier;
 import fr.adaming.model.Produit;
 import fr.adaming.service.ICategorieService;
 import fr.adaming.service.IProduitService;
@@ -31,9 +31,8 @@ public class ProduitMB implements Serializable {
 	private ICategorieService categorieService;
 	private Produit produit;
 	private String categorieIdString;
-	private Panier panier;
-	private LigneCommande ligne;
-	private long idProduit;
+	private UploadedFile imageFichier;
+	
 
 	// Constructeur
 	public ProduitMB() {
@@ -42,13 +41,6 @@ public class ProduitMB implements Serializable {
 	@PostConstruct
 	public void init(){
 		this.produit = new Produit();
-		this.panier = (Panier) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("panier");
-		if (panier == null) {
-			this.panier = new Panier();
-			this.panier.setListe(new ArrayList<LigneCommande>());
-			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("panier", panier);
-		}
-		ligne=new LigneCommande();
 	}
 	public void initListener(ComponentSystemEvent event) {
 		List<Produit> listeProduits = produitService.getAllProduits();
@@ -75,34 +67,29 @@ public class ProduitMB implements Serializable {
 	public void setCategorieIdString(String categorieIdString) {
 		this.categorieIdString = categorieIdString;
 	}
-
-	public Panier getPanier() {
-		return panier;
+	public UploadedFile getImageFichier() {
+		return imageFichier;
 	}
-	public void setPanier(Panier panier) {
-		this.panier = panier;
+	public void setImageFichier(UploadedFile imageFichier) {
+		this.imageFichier = imageFichier;
 	}
-	public LigneCommande getLigne() {
-		return ligne;
-	}
-	public void setLigne(LigneCommande ligne) {
-		this.ligne = ligne;
-	}
-	public long getIdProduit() {
-		return idProduit;
-	}
-	public void setIdProduit(long idProduit) {
-		this.idProduit = idProduit;
-	}
-
 	// Methodes
 	public String addProduit() {
+		if (imageFichier==null) {
+			System.out.println("Scrogneugneu");
+		} else {
+			System.out.println("yay ?");
+			System.out.println(imageFichier);
+		}
+		System.out.println(produit);
+		produit.setImage(imageFichier.getContents());
 		System.out.println("tentative d'ajout du produit "+produit);
 		long idCategorie = Long.parseLong(this.categorieIdString);
 		Categorie c = this.categorieService.getCategorieById(idCategorie);
 		System.out.println("Ajout produit : " + produitService.addProduit(this.produit, c));
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
+		
 		return "home.xhtml";
 	}
 	public String updateProduit() {
@@ -121,52 +108,5 @@ public class ProduitMB implements Serializable {
 	}
 	
 	
-	// TODO : actionlistener +test
-	public String augmenter() {
-		produit = produitService.getProduitById(idProduit);
-		boolean existe = false;
-		for (LigneCommande ligneP : panier.getListe()) {
-			Produit produitCompare = ligneP.getProduit();
-			if (produitCompare.getId() == produit.getId()) {
-				if (produit.getQuantite() > ligneP.getQuantite()) {
-					ligneP.setQuantite(ligneP.getQuantite() + 1);
-				} else {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage("Vous ne pouvez plus rajouter de ce produit."));
-				}
-				existe = true;
-				break;
-			}
-		}
-		if (existe == false) {
-			ligne.setProduit(produit);
-			ligne.setQuantite(1);
-			ligne.setPrix(produit.getPrix());
-			panier.getListe().add(ligne);
-		}
-		
-		return "home";
-	}
-
-	public String diminuer() {
-		produit = produitService.getProduitById(idProduit);
-		boolean existe = false;
-		for (LigneCommande ligneP : panier.getListe()) {
-			Produit produitCompare = ligneP.getProduit();
-			if (produitCompare.getId() == produit.getId()) {
-				if (ligneP.getQuantite() == 1) {
-					panier.getListe().remove(ligneP);
-				} else if (ligneP.getQuantite() > 0) {
-					ligneP.setQuantite(ligneP.getQuantite() - 1);
-				}
-				existe = true;
-				break;
-			}
-		}
-		if (existe == false) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Vous n'aviez pas sélectionné ce produit."));
-		}
-		return "home";
-	}
+	
 }

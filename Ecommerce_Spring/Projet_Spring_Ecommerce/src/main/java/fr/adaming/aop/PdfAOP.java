@@ -9,14 +9,17 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
 
-@Aspect
+//@Component
+//@Aspect
 public class PdfAOP {
-	@Before("execution(* fr.adaming.managedBeans.TestMB.exportPdf(..))")
+	//@Before("execution(* fr.adaming.managedBeans.TestMB.exportPdf(..))")
 	public void beforeExportPdf(JoinPoint joinPoint) {
-		System.out.println("After - " + joinPoint.getSignature().getName() + " :");
+		System.out.println("Before - " + joinPoint.getSignature().getName() + " :");
 		System.out.println("  - params : " + Arrays.toString(joinPoint.getArgs()));
 		System.out.println("  - target : " + joinPoint.getTarget());
 		PDDocument document = new PDDocument();
@@ -43,5 +46,10 @@ public class PdfAOP {
 		} catch (IOException | COSVisitorException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//@After("execution(* fr.adaming.managedBeans.TestMB.exportPdf(..))")
+	public void afterExportPdf(JoinPoint pointJonction){
+		System.out.println("after");
 	}
 }

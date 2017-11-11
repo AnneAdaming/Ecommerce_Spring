@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,11 +32,14 @@ public class Produit implements Serializable {
 	private double prix;
 	@Column(name="quantite_pr")
 	private int quantite;
+	@Lob
+	private byte[] image;
 	@ManyToOne
 	@JoinColumn(name="id_ca", referencedColumnName="id_ca")
 	private Categorie categorie;
 	@OneToMany(mappedBy="produit")
 	private List<LigneCommande> listeLigneCommande;
+	
 	
 	//Constructeurs
 	public Produit() {
@@ -100,7 +104,12 @@ public class Produit implements Serializable {
 	public void setListeLigneCommande(List<LigneCommande> listeLigneCommande) {
 		this.listeLigneCommande = listeLigneCommande;
 	}
-	
+	public byte[] getImage() {
+		return image;
+	}
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 	//Méthodes propres
 	@Override
 	public String toString() {

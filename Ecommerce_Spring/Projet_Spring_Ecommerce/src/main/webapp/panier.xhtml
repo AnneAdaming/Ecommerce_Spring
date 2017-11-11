@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Panier</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:commandButton value="Retour" action="home.xhtml"
+			style="margin-bottom:20px" />
+	</h:form>
+	<p:dataTable var="ligne" value="#{panierMB.panier.liste}">
+		<p:column headerText="Nom">
+			<h:outputText value="#{ligne.produit.designation}" />
+		</p:column>
+		<p:column headerText="Quantité">
+			<h:outputText value="#{ligne.quantite}" />
+		</p:column>
+		<p:column headerText="Prix unitaire">
+			<h:outputText value="#{ligne.prix}" />
+		</p:column>
+		<p:column headerText="Prix total">
+			<h:outputText value="#{ligne.total}">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+		</p:column>
+	</p:dataTable>
+
+	<h3>
+		Le total est de
+		<h:outputText value="#{sessionScope.total}">
+			<f:convertNumber pattern="#0.00" />
+		</h:outputText>
+		euros.
+	</h3>
+
+	<h:form >
+		<h:panelGrid columns="2">
+			<p:outputLabel for="nom" value="Nom : " />
+			<p:inputMask id="nom" value="#{panierMB.client.nom}" required="true"
+				validator="#{panierMB.validerNonVide}" />
+
+			<p:outputLabel for="prenom" value="Prenom : " />
+			<p:inputMask id="prenom" value="#{panierMB.client.prenom}"
+				validator="#{panierMB.validerNonVide}" />
+			<p:outputLabel for="adresse" value="Adresse : " />
+			<p:inputMask id="adresse" value="#{panierMB.client.adresse}" />
+			<p:outputLabel for="email" value="Email : " />
+			<p:inputMask id="email" value="#{panierMB.client.email}" />
+			<p:outputLabel for="tel" value="Téléphone : " />
+			<p:inputMask id="tel" value="#{panierMB.client.telephone}" />
+			<p:commandButton value="Valider la commande"
+				action="#{panierMB.valider}" style="margin-top:20px" />
+		</h:panelGrid>
+	</h:form>
+
+	<p:growl></p:growl>
+</h:body>
+</html>

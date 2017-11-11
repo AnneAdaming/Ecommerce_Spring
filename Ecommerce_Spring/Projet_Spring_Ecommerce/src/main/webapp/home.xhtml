@@ -55,6 +55,12 @@
 	<p:link value="Modif Produit" outcome="modif_produit.xhtml" style="color:green" />
 	 | 
 	<p:link value="Suppr Produit" outcome="suppr_produit.xhtml" style="color:green" />
+	 |
+	<p:link value="Voir Panier" outcome="panier.xhtml" style="color:red"></p:link>
+	
+	
+	
+	
 	<p:dataTable var="produit" value="#{sessionScope.listeProduits}">
 	    <p:column headerText="Id">
 	        <h:outputText value="#{produit.id}" />
@@ -64,6 +70,11 @@
 	    </p:column>
 	    <p:column headerText="Description">
 	        <h:outputText value="#{produit.description}" />
+	    </p:column>
+	    <p:column headerText="Illustration">
+	        <p:graphicImage value="#{imageMB.image}" width="150px">
+	        	<f:param name="id" value="#{produit.id}"></f:param>
+	        </p:graphicImage>
 	    </p:column>
 	    <p:column headerText="Prix">
 	        <h:outputText value="#{produit.prix}" />
@@ -76,19 +87,26 @@
 	    </p:column>
 	    <p:column headerText="Ajouter au panier">
 	    	<h:form>
-	    		<h:commandButton value="+1" action="#{produitMB.augmenter}">
-	    			<f:setPropertyActionListener target="#{produitMB.idProduit}" value="#{produit.id}" />
+	    		<h:commandButton value="+1" action="#{panierMB.augmenter}">
+	    			<f:setPropertyActionListener target="#{panierMB.idProduit}" value="#{produit.id}" />
 	    		</h:commandButton>
 	    	</h:form>
 	    </p:column>
 	    <p:column headerText="Enlever du panier">
 	    	<h:form>
-	    		<h:commandButton value="-1" action="#{produitMB.diminuer}">
-	    			<f:setPropertyActionListener target="#{produitMB.idProduit}" value="#{produit.id}" />
+	    		<h:commandButton value="-1" action="#{panierMB.diminuer}">
+	    			<f:setPropertyActionListener target="#{panierMB.idProduit}" value="#{produit.id}" />
 	    		</h:commandButton>
 	    	</h:form>
 	    </p:column>
+	    
+	   
 	</p:dataTable>
+	
+	<p:media value="https://www.youtube.com/v/2yMyor-Sd1Q" player="flash"/>
+	
+	
+	 <p:growl></p:growl>
 	
 </h:body>
 </html>
