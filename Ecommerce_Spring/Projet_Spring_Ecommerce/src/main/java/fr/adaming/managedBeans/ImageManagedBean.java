@@ -25,14 +25,13 @@ public class ImageManagedBean {
 		this.produitService = produitService;
 	}
 	
-	public StreamedContent getImage() throws IOException{
+	public StreamedContent getImage() throws IOException {
 		FacesContext contexte=FacesContext.getCurrentInstance();
 		if(contexte.getCurrentPhaseId()==PhaseId.RENDER_RESPONSE){
 			return new DefaultStreamedContent();
 		} else {
 			// On récupère l'id du produit, sous forme de String
 			String id=contexte.getExternalContext().getRequestParameterMap().get("id");
-			
 			// On récupère le produit associé à l'id
 			Produit produit=new Produit();
 			System.out.println("id : "+id);
@@ -42,7 +41,5 @@ public class ImageManagedBean {
 			// On retourne l'image sous format ByteArrayInputStream
 			return new DefaultStreamedContent(new ByteArrayInputStream(image));
 		}
-		
 	}
-	
 }
