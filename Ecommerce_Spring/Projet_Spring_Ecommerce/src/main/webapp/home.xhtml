@@ -22,17 +22,19 @@
 			</c:if>
 			<c:if test="#{sessionScope.logged==true}">
 				<p:submenu label="Ajout" icon="ui-icon-pencil">
-					<p:menuitem value="Admin" url="ajout_admin.xhtml" />
-					<p:menuitem value="Categorie" url="ajout_categorie.xhtml" />
-					<p:menuitem value="Produit" url="ajout_produit.xhtml" />
+					<p:menuitem value="Admin" url="#" onclick="PF('ajoutAdminDialog').show();" />
+					<p:menuitem value="Categorie" url="#" onclick="PF('ajoutCategorieDialog').show();" />
+					<p:menuitem value="Produit (popup)" url="#" onclick="PF('ajoutProduitDialog').show();" />
+					<p:menuitem value="Produit (page)" url="ajout_produit.xhtml" />
 				</p:submenu>
 				<p:submenu label="Modification" icon="ui-icon-gear">
-					<p:menuitem value="Categorie" url="modif_categorie.xhtml" />
-					<p:menuitem value="Produit" url="modif_produit.xhtml" />
+					<p:menuitem value="Categorie" url="#" onclick="PF('modifCategorieDialog').show();" />
+					<p:menuitem value="Produit (popup)" url="#" onclick="PF('modifProduitDialog').show();" />
+					<p:menuitem value="Produit (page)" url="modif_produit.xhtml" />
 				</p:submenu>
 				<p:submenu label="Suppression" icon="ui-icon-close">
-					<p:menuitem value="Categorie" url="suppr_categorie.xhtml" />
-					<p:menuitem value="Produit" url="suppr_produit.xhtml" />
+					<p:menuitem value="Categorie" url="#" onclick="PF('supprCategorieDialog').show();" />
+					<p:menuitem value="Produit" url="#" onclick="PF('supprProduitDialog').show();" />
 				</p:submenu>
 			</c:if>
 			<f:facet name="options">
@@ -126,14 +128,139 @@
 				<p:outputLabel for="emailId" value="Mail : " />
 				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true" />
 				<p:message for="emailId" style="color: red" />
-				
 				<p:outputLabel for="mdpId" value="Mdp : " />
-				<p:inputText id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
+				<p:password id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
 				<p:message for="mdpId" style="color: red" />
 			</h:panelGrid>
 			<p:commandButton value="Login" action="#{adminMB.login}" update="loginId" />
 		</p:dialog>
 	</h:form>
 	
+	<h:form>
+		<p:dialog header="Ajout Admin" widgetVar="ajoutAdminDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="ajoutAdminId">
+				<p:outputLabel for="emailId" value="Mail : " />
+				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true" />
+				<p:message for="emailId" style="color: red" />
+				<p:outputLabel for="mdpId" value="Mdp : " />
+				<p:inputText id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
+				<p:message for="mdpId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Ajouter" action="#{adminMB.addAdmin}" update="ajoutAdminId" />
+		</p:dialog>
+	</h:form>
+	
+	<h:form>
+		<p:dialog header="Ajout Categorie" widgetVar="ajoutCategorieDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="ajoutCategorieId">
+				<p:outputLabel for="nomCategorieId" value="Nom Categorie : " />
+				<p:inputText id="nomCategorieId" value="#{categorieMB.categorie.nomCategorie}" required="true" />
+				<p:message for="nomCategorieId" style="color: red" />
+				<p:outputLabel for="descriptionId" value="Description : " />
+				<p:inputText id="descriptionId" value="#{categorieMB.categorie.description}" required="true" />
+				<p:message for="descriptionId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Ajouter" action="#{categorieMB.addCategorie}" update="ajoutCategorieId" />
+		</p:dialog>
+	</h:form>
+	
+	<h:form>
+		<p:dialog header="Ajout Produit" widgetVar="ajoutProduitDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="ajoutProduitId">
+				<p:outputLabel for="designationId" value="Designation : " />
+				<p:inputText id="designationId" value="#{produitMB.produit.designation}" required="true" />
+				<p:message for="designationId" style="color: red" />
+				<p:outputLabel for="descriptionId" value="Description : " />
+				<p:inputText id="descriptionId" value="#{produitMB.produit.description}" required="true" />
+				<p:message for="descriptionId" style="color: red" />
+				<p:outputLabel for="prixId" value="Prix : " />
+				<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true" />
+				<p:message for="prixId" style="color: red" />
+				<p:outputLabel for="quantiteId" value="Quantite : " />
+				<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true" />
+				<p:message for="quantiteId" style="color: red" />
+				<p:outputLabel for="categorieId" value="Categorie : " />
+				<p:selectOneMenu id="categorieId" value="#{produitMB.categorieIdString}">
+					<c:forEach var="categorie" items="#{sessionScope.listeCategories}">
+						<f:selectItem itemLabel="#{categorie.nomCategorie}" itemValue="#{categorie.id}" />
+					</c:forEach>
+				</p:selectOneMenu>
+				<p:messages showDetail="true" />
+				<p:fileUpload value="#{produitMB.imageFichier}" mode="simple" />
+				<p:message for="categorieId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Ajouter" action="#{produitMB.addProduit}" update="ajoutProduitId" ajax="false" />
+		</p:dialog>
+	</h:form>
+	
+	<h:form>
+		<p:dialog header="Modification Categorie" widgetVar="modifCategorieDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="modifCategorieId">
+				<p:outputLabel for="idId" value="Id : " />
+				<p:inputText id="idId" value="#{categorieMB.categorie.id}" required="true" />
+				<p:message for="idId" style="color: red" />
+				<p:outputLabel for="nomCategorieId" value="Nom Categorie : " />
+				<p:inputText id="nomCategorieId" value="#{categorieMB.categorie.nomCategorie}" required="true" />
+				<p:message for="nomCategorieId" style="color: red" />
+				<p:outputLabel for="descriptionId" value="Description : " />
+				<p:inputText id="descriptionId" value="#{categorieMB.categorie.description}" required="true" />
+				<p:message for="descriptionId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Modifier" action="#{categorieMB.updateCategorie}" update="modifCategorieId" />
+		</p:dialog>
+	</h:form>
+	
+	<h:form>
+		<p:dialog header="Modification Produit" widgetVar="modifProduitDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="modifProduitId">
+				<p:outputLabel for="idId" value="Id : " />
+				<p:inputText id="idId" value="#{produitMB.produit.id}" required="true" />
+				<p:message for="idId" style="color: red" />
+				<p:outputLabel for="designationId" value="Designation : " />
+				<p:inputText id="designationId" value="#{produitMB.produit.designation}" required="true" />
+				<p:message for="designationId" style="color: red" />
+				<p:outputLabel for="descriptionId" value="Description : " />
+				<p:inputText id="descriptionId" value="#{produitMB.produit.description}" required="true" />
+				<p:message for="descriptionId" style="color: red" />
+				<p:outputLabel for="prixId" value="Prix : " />
+				<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true" />
+				<p:message for="prixId" style="color: red" />
+				<p:outputLabel for="quantiteId" value="Quantite : " />
+				<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true" />
+				<p:message for="quantiteId" style="color: red" />
+				<p:outputLabel for="categorieId" value="Categorie : " />
+				<p:selectOneMenu id="categorieId" value="#{produitMB.categorieIdString}">
+					<c:forEach var="categorie" items="#{sessionScope.listeCategories}">
+						<f:selectItem itemLabel="#{categorie.nomCategorie}" itemValue="#{categorie.id}" />
+					</c:forEach>
+				</p:selectOneMenu>
+				<p:message for="categorieId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Modifier" action="#{produitMB.updateProduit}" update="modifProduitId" />
+		</p:dialog>
+	</h:form>
+	
+	<h:form>
+		<p:dialog header="Suppression Categorie" widgetVar="supprCategorieDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="supprCategorieId">
+				<p:outputLabel for="idId" value="Id : " />
+				<p:inputText id="idId" value="#{categorieMB.categorie.id}" required="true" />
+				<p:message for="idId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Supprimer" action="#{categorieMB.deleteCategorie}" update="supprCategorieId" />
+		</p:dialog>
+	</h:form>
+	
+	<h:form>
+		<p:dialog header="Suppression Produit" widgetVar="supprProduitDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="supprProduitId">
+				<p:outputLabel for="idId" value="Id : " />
+				<p:inputText id="idId" value="#{produitMB.produit.id}" required="true" />
+				<p:message for="idId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Supprimer" action="#{produitMB.deleteProduit}" update="supprProduitId" />
+		</p:dialog>
+	</h:form>
+		
 </h:body>
 </html>

@@ -1,19 +1,15 @@
 package fr.adaming.managedBeans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
-import javax.imageio.ImageIO;
-
 import org.primefaces.model.UploadedFile;
-
 import fr.adaming.model.Categorie;
 import fr.adaming.model.Produit;
 import fr.adaming.service.ICategorieService;
@@ -73,6 +69,7 @@ public class ProduitMB implements Serializable {
 	public void setImageFichier(UploadedFile imageFichier) {
 		this.imageFichier = imageFichier;
 	}
+	
 	// Methodes
 	public String addProduit() {
 		if (imageFichier==null) {
@@ -89,7 +86,11 @@ public class ProduitMB implements Serializable {
 		System.out.println("Ajout produit : " + produitService.addProduit(this.produit, c));
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
-		
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
 	public String updateProduit() {
@@ -98,15 +99,22 @@ public class ProduitMB implements Serializable {
 		produitService.updateProduit(this.produit, c);
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
 	public String deleteProduit() {
 		produitService.deleteProduit(this.produit);
 		List<Produit> listeProduits = produitService.getAllProduits();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
-	
-	
-	
 }

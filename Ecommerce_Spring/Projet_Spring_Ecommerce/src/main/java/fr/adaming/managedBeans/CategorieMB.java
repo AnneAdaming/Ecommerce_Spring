@@ -1,5 +1,6 @@
 package fr.adaming.managedBeans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,22 +52,36 @@ public class CategorieMB implements Serializable {
 	
 	// Methodes
 	public String addCategorie() {
-		System.out.println("Ajout categorie : " + categorieService.addCategorie(this.categorie));
+		categorieService.addCategorie(this.categorie);
 		List<Categorie> listeCategories = categorieService.getAllCategories();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
 	public String updateCategorie() {
 		categorieService.updateCategorie(this.categorie);
 		List<Categorie> listeCategories = categorieService.getAllCategories();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
 	public String deleteCategorie() {
-		System.out.println("vue : "+categorie);
 		categorieService.deleteCategorie(this.categorie);
 		List<Categorie> listeCategories = categorieService.getAllCategories();
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeCategories", listeCategories);
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
 }

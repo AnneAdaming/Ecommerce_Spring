@@ -54,11 +54,10 @@ public class AdminMB implements Serializable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return "home.xhtml";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("mail ou mdp invalide"));
-			return "login.xhtml";
 		}
+		return "home.xhtml";
 	}
 	public String logout() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
@@ -71,6 +70,11 @@ public class AdminMB implements Serializable {
 	}
 	public String addAdmin() {
 		System.out.println("Ajout admin : " + adminService.addAdmin(this.admin));
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "home.xhtml";
 	}
 }
