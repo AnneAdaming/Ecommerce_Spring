@@ -34,7 +34,6 @@ public class ImageManagedBean {
 			String id=contexte.getExternalContext().getRequestParameterMap().get("id");
 			// On récupère le produit associé à l'id
 			Produit produit=new Produit();
-			System.out.println("id : "+id);
 			produit=produitService.getProduitById(Integer.parseInt(id));
 			// On récupère l'image en byte
 			byte[] image=produit.getImage();

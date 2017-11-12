@@ -71,21 +71,21 @@ public class ProduitMB implements Serializable {
 	}
 	
 	// Methodes
+	public List<Produit> getProduitsByCategorie(Categorie categorie) {
+		return this.produitService.getAllProduitsByCategorie(categorie);
+	}
 	public String addProduit() {
 		if (imageFichier==null) {
-			System.out.println("Scrogneugneu");
+			System.out.println("Erreur lors de l'ajout de l'image du produit : pas de fichier selectionné");
 		} else {
-			System.out.println("yay ?");
-			System.out.println(imageFichier);
+			produit.setImage(imageFichier.getContents());
+			System.out.println("tentative d'ajout du produit "+produit);
+			long idCategorie = Long.parseLong(this.categorieIdString);
+			Categorie c = this.categorieService.getCategorieById(idCategorie);
+			System.out.println("Ajout produit : " + produitService.addProduit(this.produit, c));
+			List<Produit> listeProduits = produitService.getAllProduits();
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		}
-		System.out.println(produit);
-		produit.setImage(imageFichier.getContents());
-		System.out.println("tentative d'ajout du produit "+produit);
-		long idCategorie = Long.parseLong(this.categorieIdString);
-		Categorie c = this.categorieService.getCategorieById(idCategorie);
-		System.out.println("Ajout produit : " + produitService.addProduit(this.produit, c));
-		List<Produit> listeProduits = produitService.getAllProduits();
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listeProduits", listeProduits);
 		try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
 		} catch (IOException e) {

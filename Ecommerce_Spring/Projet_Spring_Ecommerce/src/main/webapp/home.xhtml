@@ -8,20 +8,19 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Home Ecommerce</title>
-	
 	<f:event listener="#{categorieMB.initListener}" type="preRenderView" />
 	<f:event listener="#{produitMB.initListener}" type="preRenderView" />
 </h:head>
 <h:body>
-	<p:growl />
+	<p:growl id="growl" />
 	<!-- ================================ MenuBar ================================ -->
 	<h:form id="menubarForm">
 		<p:menubar>
 			<c:if test="#{sessionScope.logged!=true}">
-				<p:menuitem value="Voir le panier" url="panier.xhtml" />
+				<p:menuitem value="Voir le panier" url="panier.xhtml" icon="ui-icon-cart" />
 			</c:if>
 			<c:if test="#{sessionScope.logged==true}">
-				<p:submenu label="Ajout" icon="ui-icon-pencil">
+				<p:submenu label="Ajout" icon="ui-icon-plus">
 					<p:menuitem value="Admin" url="#" onclick="PF('ajoutAdminDialog').show();" />
 					<p:menuitem value="Categorie" url="#" onclick="PF('ajoutCategorieDialog').show();" />
 					<p:menuitem value="Produit (popup)" url="#" onclick="PF('ajoutProduitDialog').show();" />
@@ -49,76 +48,50 @@
 		</p:menubar>
 	</h:form>
 	
-	<!-- ================================ WIP ================================ -->
-	<h:form enctype="multipart/form-data">
-		<p:messages showDetail="true" />
-		<p:fileUpload value="#{imageStoreBean.file}" mode="simple" />
-		<p:commandButton value="Submit" ajax="false" actionListener="#{imageStoreBean.storeImage}" />
-		<h:graphicImage id="image" alt="uploaded image" url="/image"/>
-	</h:form>
 	
+	<!-- ================================ TODO ================================ -->
 	<p:media value="https://www.youtube.com/v/2yMyor-Sd1Q" player="flash"/>
-
 	<h:form>
-		<h:commandButton value="Envoyer Mail" action="#{testMB.sendMail}" />
-		<h:commandButton value="Exporter Pdf" action="#{testMB.exportPdf}" />
+		<p:commandButton value="Envoyer Mail" actionListener="#{panierMB.envoyerMail}" />
+		<p:commandButton value="Exporter Pdf" actionListener="#{panierMB.exporterPdf}" />
 	</h:form>
 	
-	<!-- ================================ Tableaux de Données ================================ -->
-	<p:dataTable var="categorie" value="#{sessionScope.listeCategories}">
-	    <p:column headerText="Id">
-	        <h:outputText value="#{categorie.id}" />
-	    </p:column>
-	    <p:column headerText="Nom">
-	        <h:outputText value="#{categorie.nomCategorie}" />
-	    </p:column>
-	    <p:column headerText="Description">
-	        <h:outputText value="#{categorie.description}" />
-	    </p:column>
-	</p:dataTable>
 	
-	<br/>
-	<br/>
+	<!-- ================================ Tableau de Données ================================ -->
 	
-	<p:dataTable var="produit" value="#{sessionScope.listeProduits}">
-	    <p:column headerText="Id">
-	        <h:outputText value="#{produit.id}" />
-	    </p:column>
-	    <p:column headerText="Designation">
-	        <h:outputText value="#{produit.designation}" />
-	    </p:column>
-	    <p:column headerText="Description">
-	        <h:outputText value="#{produit.description}" />
-	    </p:column>
-	    <p:column headerText="Illustration">
-	        <p:graphicImage value="#{imageMB.image}" width="150px">
-	        	<f:param name="id" value="#{produit.id}" />
-	        </p:graphicImage>
-	    </p:column>
-	    <p:column headerText="Prix">
-	        <h:outputText value="#{produit.prix}" />
-	    </p:column>
-	    <p:column headerText="Quantite">
-	        <h:outputText value="#{produit.quantite}" />
-	    </p:column>
-	    <p:column headerText="Categorie">
-	        <h:outputText value="#{produit.categorie.nomCategorie}" />
-	    </p:column>
-	    <p:column headerText="Ajouter au panier">
-	    	<h:form>
-	    		<h:commandButton value="+1" action="#{panierMB.augmenter}">
-	    			<f:setPropertyActionListener target="#{panierMB.idProduit}" value="#{produit.id}" />
-	    		</h:commandButton>
-	    	</h:form>
-	    </p:column>
-	    <p:column headerText="Enlever du panier">
-	    	<h:form>
-	    		<h:commandButton value="-1" action="#{panierMB.diminuer}">
-	    			<f:setPropertyActionListener target="#{panierMB.idProduit}" value="#{produit.id}" />
-	    		</h:commandButton>
-	    	</h:form>
-	    </p:column>
-	</p:dataTable>
+	<h:form id="dataForm">
+		<p:accordionPanel multiple="true" var="categorie" value="#{sessionScope.listeCategories}">
+			<p:tab title="#{categorie.nomCategorie} - #{categorie.description}">
+				<p:dataScroller var="produit" value="#{produitMB.getProduitsByCategorie(categorie)}">
+					<h:panelGrid columns="3" width="100%" cellpadding="30px">
+						<p:graphicImage value="#{imageMB.image}" width="150px">
+							<f:param name="id" value="#{produit.id}" />
+						</p:graphicImage>
+						<h:panelGrid columns="2">
+							<p:outputLabel value="Id :" />
+							<p:outputLabel value="#{produit.id}" />
+							<p:outputLabel value="Designation :" />
+							<p:outputLabel value="#{produit.designation}" />
+							<p:outputLabel value="Description :" />
+							<p:outputLabel value="#{produit.description}" />
+							<p:outputLabel value="Prix :" />
+							<p:outputLabel value="#{produit.prix}" />
+							<p:outputLabel value="Quantite :" />
+							<p:outputLabel value="#{produit.quantite}" />
+						</h:panelGrid>
+						<c:if test="#{sessionScope.logged!=true}">
+							<h:panelGrid columns="2">
+								<p:outputLabel value="Ajouter au panier" />
+								<p:commandButton value="+1" actionListener="#{panierMB.ajouter(produit)}" update="growl" />
+								<p:outputLabel value="Enlever du panier" />
+					    		<p:commandButton value="-1" actionListener="#{panierMB.retirer(produit)}" update="growl" />
+							</h:panelGrid>
+						</c:if>
+					</h:panelGrid>
+				</p:dataScroller>
+			</p:tab>
+		</p:accordionPanel>
+	</h:form>
 	
 	
 	<!-- ================================ Dialogs ================================ -->

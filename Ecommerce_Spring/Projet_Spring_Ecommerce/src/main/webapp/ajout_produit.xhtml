@@ -34,11 +34,11 @@
 					<f:selectItem itemLabel="#{categorie.nomCategorie}" itemValue="#{categorie.id}" />
 				</c:forEach>
 			</p:selectOneMenu>
-			
-			<p:messages showDetail="true" />
-			<p:fileUpload value="#{produitMB.imageFichier}" mode="simple" />
-			
 			<p:message for="categorieId" style="color: red" />
+			
+			<p:outputLabel for="imageId" value="Image : " />
+			<p:fileUpload id="imageId" value="#{produitMB.imageFichier}" mode="simple" />
+			<p:message for="imageId" style="color: red" />
 		</h:panelGrid>
 		<p:commandButton value="Ajouter" action="#{produitMB.addProduit}" update="ajoutProduitId" ajax="false" />
 	</h:form>

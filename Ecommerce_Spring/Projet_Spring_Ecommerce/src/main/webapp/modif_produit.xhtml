@@ -39,8 +39,12 @@
 				</c:forEach>
 			</p:selectOneMenu>
 			<p:message for="categorieId" style="color: red" />
+			
+			<p:outputLabel for="imageId" value="Image : " />
+			<p:fileUpload id="imageId" value="#{produitMB.imageFichier}" mode="simple" />
+			<p:message for="imageId" style="color: red" />
 		</h:panelGrid>
-		<p:commandButton value="Modifier" action="#{produitMB.updateProduit}" update="modifProduitId" />
+		<p:commandButton value="Modifier" action="#{produitMB.updateProduit}" update="modifProduitId" ajax="false" />
 	</h:form>
 </h:body>
 </html>

@@ -9,11 +9,14 @@
 	<title>Panier</title>
 </h:head>
 <h:body>
+	<p:growl id="growl" />
+	
 	<h:form>
-		<p:commandButton value="Retour" action="home.xhtml"
-			style="margin-bottom:20px" />
+		<p:commandButton value="Retour" action="home.xhtml" style="margin-bottom:20px" icon="ui-icon-home" />
 	</h:form>
-	<p:dataTable var="ligne" value="#{panierMB.panier.liste}">
+	
+	<!-- ================================ Tableau Recap ================================ -->
+	<p:dataTable var="ligne" value="#{sessionScope.panier.listeLignesCommande}">
 		<p:column headerText="Nom">
 			<h:outputText value="#{ligne.produit.designation}" />
 		</p:column>
@@ -29,35 +32,44 @@
 			</h:outputText>
 		</p:column>
 	</p:dataTable>
-
+	<br/><br/>
+	
 	<h3>
 		Le total est de
-		<h:outputText value="#{sessionScope.total}">
+		<h:outputText value="#{sessionScope.panier.total}">
 			<f:convertNumber pattern="#0.00" />
 		</h:outputText>
 		euros.
 	</h3>
+	<br/><br/>
+	
+	
+	<!-- ================================ Formulaire Commande ================================ -->
+	<h:form>
+		<h:panelGrid columns="3" id="commandePanierId">
+			<p:outputLabel for="nomId" value="Nom : " />
+			<p:inputMask id="nomId" value="#{panierMB.client.nom}" required="true" />
+			<p:message for="nomId" style="color: red" />
 
-	<h:form >
-		<h:panelGrid columns="2">
-			<p:outputLabel for="nom" value="Nom : " />
-			<p:inputMask id="nom" value="#{panierMB.client.nom}" required="true"
-				validator="#{panierMB.validerNonVide}" />
+			<p:outputLabel for="prenomId" value="Prenom : " />
+			<p:inputMask id="prenomId" value="#{panierMB.client.prenom}" required="true" />
+			<p:message for="prenomId" style="color: red" />
 
-			<p:outputLabel for="prenom" value="Prenom : " />
-			<p:inputMask id="prenom" value="#{panierMB.client.prenom}"
-				validator="#{panierMB.validerNonVide}" />
-			<p:outputLabel for="adresse" value="Adresse : " />
-			<p:inputMask id="adresse" value="#{panierMB.client.adresse}" />
-			<p:outputLabel for="email" value="Email : " />
-			<p:inputMask id="email" value="#{panierMB.client.email}" />
-			<p:outputLabel for="tel" value="Téléphone : " />
-			<p:inputMask id="tel" value="#{panierMB.client.telephone}" />
-			<p:commandButton value="Valider la commande"
-				action="#{panierMB.valider}" style="margin-top:20px" />
+			<p:outputLabel for="adresseId" value="Adresse : " />
+			<p:inputMask id="adresseId" value="#{panierMB.client.adresse}" required="true" />
+			<p:message for="adresseId" style="color: red" />
+
+			<p:outputLabel for="emailId" value="Email : " />
+			<p:inputMask id="emailId" value="#{panierMB.client.email}" required="true" />
+			<p:message for="emailId" style="color: red" />
+
+			<p:outputLabel for="telephoneId" value="Téléphone : " />
+			<p:inputMask id="telephoneId" value="#{panierMB.client.telephone}" required="true" />
+			<p:message for="telephoneId" style="color: red" />
+
+			<p:commandButton value="Valider la commande" style="margin-top:20px"
+				action="#{panierMB.valider}" update="commandePanierId" />
 		</h:panelGrid>
 	</h:form>
-
-	<p:growl></p:growl>
 </h:body>
 </html>
