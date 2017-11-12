@@ -13,6 +13,8 @@
 	<f:event listener="#{produitMB.initListener}" type="preRenderView" />
 </h:head>
 <h:body>
+	<p:growl />
+	<!-- ================================ MenuBar ================================ -->
 	<h:form id="menubarForm">
 		<p:menubar>
 			<c:if test="#{sessionScope.logged!=true}">
@@ -35,7 +37,7 @@
 			</c:if>
 			<f:facet name="options">
 				<c:if test="#{sessionScope.logged!=true}">
-					<p:link value="Login" outcome="login.xhtml" />
+					<p:commandButton value="Login" onclick="PF('loginDialog').show();" style="margin-right:10px" />
 				</c:if>
 				<c:if test="#{sessionScope.logged==true}">
 					<p:outputLabel value="#{adminMB.admin.email}" style="margin-right:10px" />
@@ -45,21 +47,22 @@
 		</p:menubar>
 	</h:form>
 	
+	<!-- ================================ WIP ================================ -->
 	<h:form enctype="multipart/form-data">
 		<p:messages showDetail="true" />
 		<p:fileUpload value="#{imageStoreBean.file}" mode="simple" />
 		<p:commandButton value="Submit" ajax="false" actionListener="#{imageStoreBean.storeImage}" />
 		<h:graphicImage id="image" alt="uploaded image" url="/image"/>
 	</h:form>
+	
+	<p:media value="https://www.youtube.com/v/2yMyor-Sd1Q" player="flash"/>
 
 	<h:form>
 		<h:commandButton value="Envoyer Mail" action="#{testMB.sendMail}" />
 		<h:commandButton value="Exporter Pdf" action="#{testMB.exportPdf}" />
 	</h:form>
 	
-	<br/>
-	<br/>
-	
+	<!-- ================================ Tableaux de Données ================================ -->
 	<p:dataTable var="categorie" value="#{sessionScope.listeCategories}">
 	    <p:column headerText="Id">
 	        <h:outputText value="#{categorie.id}" />
@@ -115,7 +118,22 @@
 	    </p:column>
 	</p:dataTable>
 	
-	<p:media value="https://www.youtube.com/v/2yMyor-Sd1Q" player="flash"/>
-	<p:growl />
+	
+	<!-- ================================ Dialogs ================================ -->
+	<h:form>
+		<p:dialog header="Login" widgetVar="loginDialog" modal="true" resizable="false">
+			<h:panelGrid columns="3" id="loginId">
+				<p:outputLabel for="emailId" value="Mail : " />
+				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true" />
+				<p:message for="emailId" style="color: red" />
+				
+				<p:outputLabel for="mdpId" value="Mdp : " />
+				<p:inputText id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
+				<p:message for="mdpId" style="color: red" />
+			</h:panelGrid>
+			<p:commandButton value="Login" action="#{adminMB.login}" update="loginId" />
+		</p:dialog>
+	</h:form>
+	
 </h:body>
 </html>
