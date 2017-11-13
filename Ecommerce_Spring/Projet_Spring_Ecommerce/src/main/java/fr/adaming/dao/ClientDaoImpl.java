@@ -19,6 +19,16 @@ public class ClientDaoImpl implements IClientDao {
 		this.sessionFactory = sessionFactory;
 	}
 	
+
+	@Override
+	public Client exists(Client c) {
+		Session session = sessionFactory.getCurrentSession();
+		String req = "FROM Client c WHERE c.email=:pEmail";
+		Query query = session.createQuery(req);
+		query.setParameter("pEmail", c.getEmail());
+		Client cOut = (Client) query.uniqueResult();
+		return cOut;
+	}
 	
 	@Override
 	public Client getClientById(long id) {

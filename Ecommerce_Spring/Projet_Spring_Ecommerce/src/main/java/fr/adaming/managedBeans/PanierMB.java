@@ -137,7 +137,15 @@ public class PanierMB {
 	
 	public String valider() {
 		Panier panier = (Panier) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("panier");
-		this.client = clientService.addClient(client);
+		if (panier.getListeLignesCommande().size() == 0) {
+			return "panier.xhtml";
+		}
+		Client clientDB = clientService.exists(this.client);
+		if (clientDB == null) {
+			this.client = clientService.addClient(clientDB);
+		} else {
+			this.client = clientDB;
+		}
 		Commande commande = new Commande(new Date());
 		commande.setListeLigneCommande(panier.getListeLignesCommande());
 		commande = commandeService.addCommande(commande, client);
@@ -146,6 +154,8 @@ public class PanierMB {
 			produit.setQuantite(produit.getQuantite() - l.getQuantite());
 			ligneCommandeService.addLigneCommande(l, commande, produit);
 		}
+		exporterPdf(panier, client);
+		envoyerMail(panier, client);
 		this.client = new Client();
 		panier.setTotal(0.0);
 		panier.setListeLignesCommande(null);
@@ -159,22 +169,18 @@ public class PanierMB {
 		return "home";
 	}
 	
-	public void exporterPdf() {
+	public void exporterPdf(Panier panier, Client client) {
 		@SuppressWarnings("resource")
 //		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:application-context.xml");
 		ApplicationContext context = new FileSystemXmlApplicationContext("C:/Users/inti/git/Ecommerce_Spring/Ecommerce_Spring/Projet_Spring_Ecommerce/src/main/webapp/WEB-INF/application-context.xml");
 		IPanierService panierService = (IPanierService) context.getBean("panierServiceBean");
-		Panier panier = (Panier) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("panier");
-		Client client = this.client;
 		panierService.exporterPdf(panier, client);
 	}
-	public void envoyerMail() {
+	public void envoyerMail(Panier panier, Client client) {
 		@SuppressWarnings("resource")
 //		ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:application-context.xml");
 		ApplicationContext context = new FileSystemXmlApplicationContext("C:/Users/inti/git/Ecommerce_Spring/Ecommerce_Spring/Projet_Spring_Ecommerce/src/main/webapp/WEB-INF/application-context.xml");
 		IPanierService panierService = (IPanierService) context.getBean("panierServiceBean");
-		Panier panier = (Panier) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("panier");
-		Client client = this.client;
 		panierService.envoyerMail(panier, client);
 	}
 }

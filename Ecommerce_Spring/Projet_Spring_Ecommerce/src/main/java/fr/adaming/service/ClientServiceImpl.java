@@ -19,6 +19,15 @@ public class ClientServiceImpl implements IClientService {
 		this.clientDao = clientDao;
 	}
 
+
+	@Override
+	public Client exists(Client c) {
+		if (c==null) {
+			System.out.println("Erreur lors de la vérification de validité du client");
+			return null;
+		}
+		return clientDao.exists(c);
+	}
 	
 	@Override
 	public Client getClientById(long id) {

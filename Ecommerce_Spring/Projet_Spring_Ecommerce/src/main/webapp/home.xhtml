@@ -13,6 +13,12 @@
 </h:head>
 <h:body>
 	<p:growl id="growl" />
+	<c:if test="#{sessionScope.logged!=true}">
+		<audio autoplay="true">
+			<source src="deadly_premonition_whistle.mp3" type="audio/mpeg" />
+		</audio>
+	</c:if>
+	
 	<!-- ================================ MenuBar ================================ -->
 	<h:form id="menubarForm">
 		<p:menubar>
@@ -49,16 +55,7 @@
 	</h:form>
 	
 	
-	<!-- ================================ TODO ================================ -->
-	<p:media value="https://www.youtube.com/v/2yMyor-Sd1Q" player="flash"/>
-	<h:form>
-		<p:commandButton value="Envoyer Mail" actionListener="#{panierMB.envoyerMail}" />
-		<p:commandButton value="Exporter Pdf" actionListener="#{panierMB.exporterPdf}" />
-	</h:form>
-	
-	
 	<!-- ================================ Tableau de Données ================================ -->
-	
 	<h:form id="dataForm">
 		<p:accordionPanel multiple="true" var="categorie" value="#{sessionScope.listeCategories}">
 			<p:tab title="#{categorie.nomCategorie} - #{categorie.description}">
@@ -99,7 +96,9 @@
 		<p:dialog header="Login" widgetVar="loginDialog" modal="true" resizable="false">
 			<h:panelGrid columns="3" id="loginId">
 				<p:outputLabel for="emailId" value="Mail : " />
-				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true" />
+				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true">
+					<f:validator validatorId="mailValidator" />
+				</p:inputText>
 				<p:message for="emailId" style="color: red" />
 				<p:outputLabel for="mdpId" value="Mdp : " />
 				<p:password id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
@@ -113,7 +112,9 @@
 		<p:dialog header="Ajout Admin" widgetVar="ajoutAdminDialog" modal="true" resizable="false">
 			<h:panelGrid columns="3" id="ajoutAdminId">
 				<p:outputLabel for="emailId" value="Mail : " />
-				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true" />
+				<p:inputText id="emailId" value="#{adminMB.admin.email}" required="true">
+					<f:validator validatorId="mailValidator" />
+				</p:inputText>
 				<p:message for="emailId" style="color: red" />
 				<p:outputLabel for="mdpId" value="Mdp : " />
 				<p:inputText id="mdpId" value="#{adminMB.admin.mdp}" required="true" />
@@ -147,10 +148,14 @@
 				<p:inputText id="descriptionId" value="#{produitMB.produit.description}" required="true" />
 				<p:message for="descriptionId" style="color: red" />
 				<p:outputLabel for="prixId" value="Prix : " />
-				<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true" />
+				<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true">
+					<f:validateDoubleRange minimum="0.0" />
+				</p:inputText>
 				<p:message for="prixId" style="color: red" />
 				<p:outputLabel for="quantiteId" value="Quantite : " />
-				<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true" />
+				<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true">
+					<f:validateLongRange minimum="0" />
+				</p:inputText>
 				<p:message for="quantiteId" style="color: red" />
 				<p:outputLabel for="categorieId" value="Categorie : " />
 				<p:selectOneMenu id="categorieId" value="#{produitMB.categorieIdString}">
@@ -196,10 +201,14 @@
 				<p:inputText id="descriptionId" value="#{produitMB.produit.description}" required="true" />
 				<p:message for="descriptionId" style="color: red" />
 				<p:outputLabel for="prixId" value="Prix : " />
-				<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true" />
+				<p:inputText id="prixId" value="#{produitMB.produit.prix}" required="true">
+					<f:validateDoubleRange minimum="0.0" />
+				</p:inputText>
 				<p:message for="prixId" style="color: red" />
 				<p:outputLabel for="quantiteId" value="Quantite : " />
-				<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true" />
+				<p:inputText id="quantiteId" value="#{produitMB.produit.quantite}" required="true">
+					<f:validateLongRange minimum="0" />
+				</p:inputText>
 				<p:message for="quantiteId" style="color: red" />
 				<p:outputLabel for="categorieId" value="Categorie : " />
 				<p:selectOneMenu id="categorieId" value="#{produitMB.categorieIdString}">
@@ -217,7 +226,9 @@
 		<p:dialog header="Suppression Categorie" widgetVar="supprCategorieDialog" modal="true" resizable="false">
 			<h:panelGrid columns="3" id="supprCategorieId">
 				<p:outputLabel for="idId" value="Id : " />
-				<p:inputText id="idId" value="#{categorieMB.categorie.id}" required="true" />
+				<p:inputText id="idId" value="#{categorieMB.categorie.id}" required="true">
+					<f:validateLongRange minimum="1" />
+				</p:inputText>
 				<p:message for="idId" style="color: red" />
 			</h:panelGrid>
 			<p:commandButton value="Supprimer" action="#{categorieMB.deleteCategorie}" update="supprCategorieId" />
@@ -228,7 +239,9 @@
 		<p:dialog header="Suppression Produit" widgetVar="supprProduitDialog" modal="true" resizable="false">
 			<h:panelGrid columns="3" id="supprProduitId">
 				<p:outputLabel for="idId" value="Id : " />
-				<p:inputText id="idId" value="#{produitMB.produit.id}" required="true" />
+				<p:inputText id="idId" value="#{produitMB.produit.id}" required="true">
+					<f:validateLongRange minimum="1" />
+				</p:inputText>
 				<p:message for="idId" style="color: red" />
 			</h:panelGrid>
 			<p:commandButton value="Supprimer" action="#{produitMB.deleteProduit}" update="supprProduitId" />
